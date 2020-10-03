@@ -128,10 +128,10 @@ func GetAuthInfo(accessToken, authCode, appID string) (g.Map, error) {
 }
 
 // 登录
-func WxAppLogin(appID, comAppID, accessToken string) (g.Map, error) {
+func WxAppLogin(appID, code, comAppID, accessToken string) (g.Map, error) {
 	url := fmt.Sprintf(
 		WxAppLoginUrl,
-		appID, comAppID, accessToken)
+		appID, code, comAppID, accessToken)
 
 	rsp, err := http.Post(
 		url,

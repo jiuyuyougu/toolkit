@@ -1,4 +1,4 @@
-package wx_open
+package open
 
 const (
 	GetAppAuthAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/component/api_component_token"

@@ -127,6 +127,43 @@ func GetAuthInfo(accessToken, authCode, appID string) (g.Map, error) {
 	return gconv.Map(rspMap["authorization_info"]), nil
 }
 
+// 刷新token
+func RefreshAccessToken(accessToken, AppID, AuthAppID, refreshToken string) (g.Map, error) {
+	url := fmt.Sprintf(
+		RefreshAccessTokenUrl, accessToken)
+
+	reqMap := g.Map{
+		"component_appid":          AppID,
+		"authorizer_appid":         AuthAppID,
+		"authorizer_refresh_token": refreshToken,
+	}
+
+	reqBody, err := gjson.Encode(reqMap)
+	if err != nil {
+		return nil, err
+	}
+
+	rsp, err := http.Post(
+		url,
+		"application/json",
+		bytes.NewReader(reqBody))
+	if err != nil {
+		return nil, err
+	}
+
+	rspBody, err := ioutil.ReadAll(rsp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	rspData, err := gjson.Decode(rspBody)
+	if err != nil {
+		return nil, err
+	}
+
+	return gconv.Map(rspData), nil
+}
+
 // 登录
 func WxAppLogin(appID, code, comAppID, accessToken string) (g.Map, error) {
 	url := fmt.Sprintf(
